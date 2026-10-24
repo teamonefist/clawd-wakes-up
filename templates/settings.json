@@ -1,0 +1,68 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/clawd/hooks/session-start.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/clawd/recall/recall-engine.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/clawd/hooks/pre-compact.sh",
+            "timeout": 15
+          }
+        ],
+        "hooks_note": "Checkpoint before compaction"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/clawd/hooks/baton-writer.sh",
+            "timeout": 10
+          }
+        ],
+        "hooks_note": "Carry emotional state forward"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/clawd/cognitive/cognitive-weave.py",
+            "timeout": 10
+          }
+        ],
+        "hooks_note": "Generate thinking thread summary"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/clawd/cognitive/mood-forward.py",
+            "timeout": 5
+          }
+        ],
+        "hooks_note": "Forward mood to next session"
+      }
+    ]
+  }
+}
